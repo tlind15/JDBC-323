@@ -22,9 +22,10 @@ import java.util.Scanner;
 public class JDBC {
 
      //  Database credentials
-    static String USER;
-    static String PASS;
-    static String DBNAME;
+    static String DBNAME; // = JDBC
+    static String USER; // = cecs
+    static String PASS; // = 323
+    
     //This is the specification for the printout that I'm doing:
     //each % denotes the start of a new field.
     //The - denotes left justification.
@@ -77,17 +78,17 @@ public class JDBC {
             System.out.println("Creating statement...");
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT au_id, au_fname, au_lname, phone FROM Authors";
+            sql = "SELECT * FROM WRITINGGROUPS";
             ResultSet rs = stmt.executeQuery(sql);
 
             //STEP 5: Extract data from result set
             System.out.printf(displayFormat, "ID", "First Name", "Last Name", "Phone #");
             while (rs.next()) {
                 //Retrieve by column name
-                String id = rs.getString("au_id");
-                String phone = rs.getString("phone");
-                String first = rs.getString("au_fname");
-                String last = rs.getString("au_lname");
+                String id = rs.getString("groupname");
+                String phone = rs.getString("headwriter");
+                String first = rs.getString("yearformed");
+                String last = rs.getString("subject");
 
                 //Display values
                 System.out.printf(displayFormat, 
