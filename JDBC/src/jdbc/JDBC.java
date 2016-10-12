@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jdbc;
+package jdbc; 
 
+/*******START COPY AND PASTING HERE!!!! ********/
 import java.sql.*;
 import java.util.Scanner;
 
