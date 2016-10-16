@@ -3,7 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jdbc;
+package group_writing;
+
+/**
+ *
+ * @author tlindblom
+ */
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,58 +19,60 @@ import java.sql.Statement;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.ArrayList;
 
-/**
- *
- * @author tlindblom
- */
 public class DbFunctions {
     
       
       
     DbFunctions() {} //default empty constructor
     
-/*****Functions for Database Connectivity*****/
-
-    
-   public void connect() {
-       
-   }
- //**********
-   
+  //function allows user to add a new book to the database  
    public void addBook(Connection conn) throws SQLException {
        Scanner in = new Scanner(System.in);
        String stmt = "";
+       ArrayList<String> groups = new ArrayList<String> ();
        PreparedStatement pstmt;
        ResultSet rs;       
        
-       System.out.println("What is the title of the book? ");
+       //***Get Title***
+       System.out.print("What is the title of the book? ");
        String Title = in.nextLine();
+       //******
        
-       System.out.println("How many pages is the book? ");
-       String pages = in.nextLine();
+       //***Get Page count***
+       System.out.print("How many pages is the book? ");
+       int pages = Integer.valueOf(in.nextLine()); //in.nextLine returns a string a we want pages as an integer
+       //******
        
-       System.out.println("What is the name of the writing group who wrote the book? ");
-       String GroupName = in.nextLine();
+       //***Get groupname*** 
+       //must pick a name that already exists in the database
        
-       stmt = "Select * FROM writinggroups WHERE groupname = ?";
-       pstmt = conn.prepareStatement(stmt);
-       pstmt.setString(1, GroupName);     
+       //Querying for the list of writing groups for the user to choose from
+       stmt = "Select groupname FROM writinggroups";
+       pstmt = conn.prepareStatement(stmt);     
        rs = pstmt.executeQuery();
-        
-       if(rs.getString("groupname") == null || !rs.getString("groupname").equalsIgnoreCase(GroupName)) 
-       System.out.println("Who is the head writer? ");
-       String HeadWriter = in.nextLine();
        
-       System.out.println("What year was the writing group formed? ");
-       String YearFormed = in.nextLine();
+       //put the groupnames in a list
+       while (rs.next())
+           groups.add(rs.getString("groupname"));
+      
+       System.out.println("Which writing group wrote the book?");
        
-       System.out.println("What kinds of books does this group write? ");
-       String Subject = in.nextLine();
+       //display group name choices as options 1, 2, and 3
+       for (int i=0; i < groups.size(); i++) {
+           System.out.println("   " + String.valueOf(i+1) + ") " + groups.get(i));
+       }  
+       
+       System.out.print("Enter 1, 2, or 3 to pick an option: ");
+       int choice = Integer.valueOf(in.next());
+       //eventually need to account for invalid choice
+       
+       String GroupName = groups.get(choice - 1); //set groupname based on user choice   
+       
+       System.out.println(GroupName);
+       //******
        
        
-   }
-
-   
-    
+  }
 }
