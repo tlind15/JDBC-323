@@ -113,7 +113,19 @@ public class DbFunctions {
        pstmt.setString(3, pubName);
        pstmt.setInt(4, pubYear);
        pstmt.setInt(5, pages);
-       pstmt.executeUpdate();
+       
+       //***If user violates primary key or any uniqueness constraint***
+       try {
+           pstmt.executeUpdate();
+       }
+       
+       catch (java.sql.SQLIntegrityConstraintViolationException e) { 
+           System.out.println("Sorry it looks like that book is already stored!");
+           System.out.println("Please input another book.");
+           addBook(conn);
+           return;
+       }
+       //******
        
   }
 }
