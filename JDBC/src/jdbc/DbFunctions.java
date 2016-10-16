@@ -29,11 +29,17 @@ public class DbFunctions {
     
   //function allows user to add a new book to the database  
    public void addBook(Connection conn) throws SQLException {
+       /*Add a book to the database written by an existing writing group
+         and published by an existing publisher*/
+       
+       
        Scanner in = new Scanner(System.in);
        String stmt = "";
        ArrayList<String> groups = new ArrayList<String> ();
        PreparedStatement pstmt;
-       ResultSet rs;       
+       ResultSet rs; 
+       
+       System.out.println("\nAdd a Book \n");
        
        //***Get Title***
        System.out.print("What is the title of the book? ");
@@ -125,7 +131,75 @@ public class DbFunctions {
            addBook(conn);
            return;
        }
+       
+       System.out.println("Book added!");
+       System.out.print("Would you like to add another book? Enter 'y' or 'n'. ");
+       String decision = in.next();
+       
+       if (decision.equalsIgnoreCase("y")){
+           addBook(conn);
+           return;
+       }
+       //******    
+  }
+   
+   public void removeBook(Connection conn) throws SQLException {
+       
+       Scanner in = new Scanner(System.in);
+       String stmt = "";
+       ArrayList<String> groups = new ArrayList<String> ();
+       PreparedStatement pstmt;
+       ResultSet rs;  
+       
+       System.out.println("\nRemove a Book \n");
+       
+       //***Get Title***
+       System.out.print("What is the title of the book? ");
+       String Title = in.nextLine();
        //******
        
-  }
+       //***Get groupname*** 
+       //must pick a name that already exists in the database
+       
+       //Querying for the list of writing groups for the user to choose from
+       stmt = "Select groupname FROM writinggroups";
+       pstmt = conn.prepareStatement(stmt);     
+       rs = pstmt.executeQuery();
+       
+       //put the groupnames in a list
+       while (rs.next())
+           groups.add(rs.getString("groupname"));
+      
+       System.out.println("Which writing group wrote the book?");
+       
+       //display group name choices as options 1, 2, 3, etc.
+       for (int i=0; i < groups.size(); i++) {
+           System.out.println("   " + String.valueOf(i+1) + ") " + groups.get(i));
+       }  
+       
+       System.out.print("Enter the number corresponding to an option above: ");
+       int choice = Integer.valueOf(in.next());
+       //eventually need to account for invalid choice
+       
+       String GroupName = groups.get(choice - 1); //set groupname based on user choice
+       
+       //***Delete Book from Database***
+       stmt = "DELETE FROM books WHERE groupname = ? AND booktitle = ?";
+       pstmt = conn.prepareStatement(stmt);
+       pstmt.setString(1, GroupName);
+       pstmt.setString(2, Title);
+       
+       pstmt.executeUpdate();
+        //******
+        
+       //***Allow user to repeat action if they would like
+       System.out.println("Deleted!");
+       System.out.print("Would you like to remove another book? Enter 'y' or 'n'. ");
+       String decision = in.next();
+       
+       if (decision.equalsIgnoreCase("y")){
+           removeBook(conn);
+           return;
+       }      
+   }   
 }
