@@ -59,18 +59,47 @@ public class DbFunctions {
       
        System.out.println("Which writing group wrote the book?");
        
-       //display group name choices as options 1, 2, and 3
+       //display group name choices as options 1, 2, 3, etc.
        for (int i=0; i < groups.size(); i++) {
            System.out.println("   " + String.valueOf(i+1) + ") " + groups.get(i));
        }  
        
-       System.out.print("Enter 1, 2, or 3 to pick an option: ");
+       System.out.print("Enter the number corresponding to an option above: ");
        int choice = Integer.valueOf(in.next());
        //eventually need to account for invalid choice
        
        String GroupName = groups.get(choice - 1); //set groupname based on user choice   
        
        System.out.println(GroupName);
+       //******
+       
+       //***Get publisher name*** 
+       //must pick a publisher that already exists in the database
+       
+       //Querying for the list of publishers for the user to choose from
+       stmt = "Select publishername FROM publishers";
+       pstmt = conn.prepareStatement(stmt);     
+       rs = pstmt.executeQuery();
+       
+       //put the groupnames in a list
+       groups.clear();
+       while (rs.next())
+           groups.add(rs.getString("publishername"));
+      
+       System.out.println("Who is the publisher?");
+       
+       //display group name choices as options 1, 2, 3, etc.
+       for (int i=0; i < groups.size(); i++) {
+           System.out.println("   " + String.valueOf(i+1) + ") " + groups.get(i));
+       }  
+       
+       System.out.print("Enter the number corresponding to an option above: ");
+       choice = Integer.valueOf(in.next());
+       //eventually need to account for invalid choice
+       
+       String pubName = groups.get(choice - 1); //set publishername based on user choice   
+       
+       System.out.println(pubName);
        //******
        
        
