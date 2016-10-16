@@ -97,11 +97,23 @@ public class DbFunctions {
        choice = Integer.valueOf(in.next());
        //eventually need to account for invalid choice
        
-       String pubName = groups.get(choice - 1); //set publishername based on user choice   
+       String pubName = groups.get(choice - 1); //set publishername based on user choice
+       
+       System.out.print("What year was the book published? ");
+       int pubYear = Integer.valueOf(in.next());
        
        System.out.println(pubName);
        //******
        
+       //***Add book data to database***
+       stmt = "INSERT INTO books (groupname, booktitle, publishername, yearpublished, numberpages) VALUES (?, ?, ?, ?, ?)";
+       pstmt = conn.prepareStatement(stmt);
+       pstmt.setString(1, GroupName);
+       pstmt.setString(2, Title);
+       pstmt.setString(3, pubName);
+       pstmt.setInt(4, pubYear);
+       pstmt.setInt(5, pages);
+       pstmt.executeUpdate();
        
   }
 }
