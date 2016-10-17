@@ -25,10 +25,10 @@ public class JDBC {
     //The number indicates how wide to make the field.
     //The "s" denotes that it's a string.  All of our output in this test are 
     //strings, but that won't always be the case.
-      static final String displayFormat="%-5s%-15s%-15s%-15s\n"; //this displays 4 elements at once
+      static final String displayFormat4="%-5s%-15s%-15s%-15s\n"; //this displays 4 elements at once
       static final String displayFormat3="%-5s%-15s%-15s\n";  // this displays 3 elements at once 
       static final String displayFormat2="%-5s%-15s\n"; //this displays 2 elements at once
-      static final String displayFormat1="%-5s\n"; //this displays one element
+      static final String displayFormat="%-5s\n"; //this displays one element
 // JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.apache.derby.jdbc.ClientDriver";
     static String DB_URL = "jdbc:derby://localhost:1527/";
@@ -78,17 +78,17 @@ public static void main(String[] args) {
             ResultSet rs = stmt.executeQuery(sql);
 
             //STEP 5: Extract data from result set
-            System.out.printf(displayFormat, "ID", "First Name", "Last Name", "Phone #");
+            System.out.printf(displayFormat/*, "ID", "First Name", "Last Name", "Phone #"*/);
             while (rs.next()) {
                 //Retrieve by column name
                 String id = rs.getString("groupname");
-                String phone = rs.getString("headwriter");
-                String first = rs.getString("yearformed");
-                String last = rs.getString("subject");
+                //String phone = rs.getString("headwriter");
+                //String first = rs.getString("yearformed");
+                //String last = rs.getString("subject");
 
                 //Display values
                 System.out.printf(displayFormat, 
-                        dispNull(id), dispNull(first), dispNull(last), dispNull(phone));
+                        dispNull(id)/*, dispNull(first), dispNull(last), dispNull(phone)*/);
             }
             //STEP 6: Clean-up environment
             rs.close();
