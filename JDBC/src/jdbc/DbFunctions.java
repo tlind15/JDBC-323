@@ -45,7 +45,16 @@ public class DbFunctions {
        
        //***Get Page count***
        System.out.print("How many pages is the book? ");
-       int pages = Integer.valueOf(in.nextLine()); //in.nextLine returns a string a we want pages as an integer
+       int pages = 0;
+       do { //make sure that number of pages inserted is valid
+           try {
+               pages = in.nextInt();
+          
+           } catch (java.util.InputMismatchException e) {
+               System.out.print("That is not a valid number of pages. how many pages does the book have? ");
+           }
+           in.nextLine();
+       } while (pages <= 0);
        //******
        
        try {
@@ -69,12 +78,23 @@ public class DbFunctions {
        }  
        
        System.out.print("Enter the number corresponding to an option above: ");
-       int choice = Integer.valueOf(in.next());
-       //eventually need to account for invalid choice
-       
-       String GroupName = groups.get(choice - 1); //set groupname based on user choice   
-       
-       System.out.println(GroupName);
+       int choice = 0;
+       String GroupName = "";
+       do { //make sure that group choice input is valid
+           try {
+               choice = in.nextInt();
+               GroupName = groups.get(choice - 1);
+          
+           } catch (java.lang.IndexOutOfBoundsException e) {
+               System.out.print("That is not a valid selection. Please choose a writing group from the choices above? ");
+               choice = 0;
+           } catch (java.util.InputMismatchException x) {
+               System.out.print("That is not a valid selection. Please choose a writing group from the choices above? ");
+               choice = 0; 
+           } 
+           
+           in.nextLine();
+       } while (choice <= 0);
        //******
        
        //***Get publisher name*** 
@@ -85,9 +105,9 @@ public class DbFunctions {
        pstmt = conn.prepareStatement(stmt);     
        rs = pstmt.executeQuery();
        
-       //put the groupnames in a list
+       //put the publishers in a list
        groups.clear();
-       while (rs.next())
+       while (rs.next()) //may throw SQL excpetion (if rs is empty)
            groups.add(rs.getString("publishername"));
       
        System.out.println("Who is the publisher?");
@@ -98,17 +118,38 @@ public class DbFunctions {
        }  
        
        System.out.print("Enter the number corresponding to an option above: ");
-       choice = Integer.valueOf(in.next());
-       //eventually need to account for invalid choice
-       
-       String pubName = groups.get(choice - 1); //set publishername based on user choice
+       choice = 0;
+       String pubName = "";
+       do { //make sure that choice of publisher is valid
+           try {
+               choice = in.nextInt();
+               pubName = groups.get(choice - 1); //set publishername based on user choice
+          
+           } catch (java.lang.IndexOutOfBoundsException e) {
+               System.out.print("That is not a valid selection. Please choose a publisher from the choices above? ");
+               choice = 0;
+           } catch (java.util.InputMismatchException x) {
+               System.out.print("That is not a valid selection. Please choose a publisher from the choices above? ");
+               choice = 0; 
+           } 
+           
+           in.nextLine();
+       } while (choice <= 0);
        
        System.out.print("What year was the book published? ");
-       int pubYear = Integer.valueOf(in.next());
+       int pubYear = 0;
+       do { //make sure that the entered year is valid
+           try {
+               pubYear = in.nextInt();
+          
+           } catch (java.util.InputMismatchException e) {
+               System.out.print("That is not a valid year. What year was the book published? ");
+           }
+           in.nextLine();
+       } while (pubYear <= 0);
        
-       System.out.println(pubName);
        //******
-       
+       //return;
        //***Add book data to database***
        stmt = "INSERT INTO books (groupname, booktitle, publishername, yearpublished, numberpages) VALUES (?, ?, ?, ?, ?)";
        pstmt = conn.prepareStatement(stmt);
@@ -121,6 +162,7 @@ public class DbFunctions {
        //***If user violates primary key or any uniqueness constraint***
        try {
            pstmt.executeUpdate();
+           System.out.println("Book added!");
        }
        
        catch (java.sql.SQLIntegrityConstraintViolationException e) { 
@@ -130,7 +172,7 @@ public class DbFunctions {
            return;
        }
        
-       System.out.println("Book added!");
+       
        System.out.print("Would you like to add another book? Enter 'y' or 'n'. ");
        String decision = in.next();
        
@@ -146,11 +188,11 @@ public class DbFunctions {
         } catch (SQLException se) {
             //Handle errors for JDBC
             se.printStackTrace();
-            return;
+            
         } catch (Exception e) {
             //Handle errors for Class.forName
             e.printStackTrace();
-            return;
+            
         } finally {
             //finally block used to close resources
             try {
@@ -179,7 +221,7 @@ public class DbFunctions {
        System.out.println("\nRemove a Book \n");
        
        //***Get Title***
-       System.out.print("What is the title of the book? ");
+       System.out.print("What is the title of the book? "); 
        String Title = in.nextLine();
        //******
        
@@ -204,10 +246,23 @@ public class DbFunctions {
        }  
        
        System.out.print("Enter the number corresponding to an option above: ");
-       int choice = Integer.valueOf(in.next());
-       //eventually need to account for invalid choice
-       
-       String GroupName = groups.get(choice - 1); //set groupname based on user choice
+       int choice = 0;
+       String GroupName = "";
+       do { //make sure that group choice input is valid
+           try {
+               choice = in.nextInt();
+               GroupName = groups.get(choice - 1);
+          
+           } catch (java.lang.IndexOutOfBoundsException e) {
+               System.out.print("That is not a valid selection. Please choose a writing group from the choices above? ");
+               choice = 0;
+           } catch (java.util.InputMismatchException x) {
+               System.out.print("That is not a valid selection. Please choose a writing group from the choices above? ");
+               choice = 0; 
+           } 
+           
+           in.nextLine();
+       } while (choice <= 0);
        
        //***Delete Book from Database***
        stmt = "DELETE FROM books WHERE groupname = ? AND booktitle = ?";
@@ -216,7 +271,7 @@ public class DbFunctions {
        pstmt.setString(2, Title);
        
        pstmt.executeUpdate();
-        //******
+       //******
        
        //***Allow user to repeat action if they would like
        System.out.println("Deleted!");
@@ -274,11 +329,21 @@ public class DbFunctions {
            System.out.print("What is the new publisher's address? ");
            String pubAddress = in.nextLine();
            
+           //Make sure phone is valid
+           String pubPhone = "";
+           do {
            System.out.print("What is the new publisher's phone? Enter as XXX-XXX-XXXX: ");
-           String pubPhone = in.nextLine();
+           pubPhone = in.nextLine(); 
            
-           System.out.print("What is the new publisher's email? ");
-           String pubEmail = in.nextLine();
+           } while (pubPhone.length() < 12 && !pubPhone.contains("-"));
+           
+           //Make sure email is valid
+           String pubEmail = "";
+           do { 
+               System.out.print("What is the new publisher's email? ");
+               pubEmail = in.nextLine();
+           
+           } while (!pubEmail.contains("@"));
           
            
             //***Get old publisher name*** 
@@ -288,8 +353,7 @@ public class DbFunctions {
             pstmt = conn.prepareStatement(stmt);     
             rs = pstmt.executeQuery();
        
-            //put the groupnames in a list
-            groups.clear();
+            //put the publishers in a list
             while (rs.next())
                 groups.add(rs.getString("publishername"));
 
@@ -301,13 +365,27 @@ public class DbFunctions {
             }  
        
        System.out.print("Enter the number corresponding to an option above: ");
-       int choice = Integer.valueOf(in.next());
-       //eventually need to account for invalid choice
-       
-       String oldPub = groups.get(choice - 1); //set publishername based on user choice
+      
        //******
+       int choice = 0;
+       String oldPub = "";
+       do { //make sure that choice of publisher is valid
+           try {
+               choice = in.nextInt();
+               oldPub = groups.get(choice - 1); //set publishername based on user choice
+          
+           } catch (java.lang.IndexOutOfBoundsException e) {
+               System.out.print("That is not a valid selection. Please choose a publisher from the choices above? ");
+               choice = 0;
+           } catch (java.util.InputMismatchException x) {
+               System.out.print("That is not a valid selection. Please choose a publisher from the choices above? ");
+               choice = 0; 
+           } 
+           
+           in.nextLine();
+       } while (choice <= 0);
        
-       //***Create the new publisher using all of the same info from the old publisher but just using the new name***
+       //***Insert new publisher into the DB
             stmt = "INSERT INTO publishers (publishername, publisheraddress, publisherphone, publisheremail)"
                     + " VALUES (?, ?, ?, ?)";
 
@@ -317,7 +395,14 @@ public class DbFunctions {
             pstmt.setString(3, pubPhone);
             pstmt.setString(4, pubEmail);
 
-            pstmt.executeUpdate();
+        try {
+          pstmt.executeUpdate();
+                
+        } catch (java.sql.SQLIntegrityConstraintViolationException e) {
+           System.out.println("Sorry it looks like that publisher is already stored!");
+           System.out.println("Please add a new publisher.");
+           publisherChange(conn);
+       }
             //******
       
        
@@ -327,8 +412,20 @@ public class DbFunctions {
        pstmt.setString(1, newPub);
        pstmt.setString(2, oldPub);
        
-       pstmt.executeUpdate();
+       
+   
+        pstmt.executeUpdate();
+        System.out.println("Updated!");   
        //******  
+       
+       //***Allow user to repeat action if they would like
+       
+       System.out.print("Would you like to update another publisher? Enter 'y' or 'n'. ");
+       String decision = in.next();
+       
+       if (decision.equalsIgnoreCase("y")){
+           publisherChange(conn);
+       } 
        
        rs.close();
        pstmt.close();
