@@ -1,5 +1,10 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package jdbc;
-        
+
 import java.sql.*;
 import java.util.Scanner;
 
@@ -8,21 +13,6 @@ import java.util.Scanner;
  * @author MacBookAir
  */
 public class JDBC {
-    
-
-    /**
-     * @param args the command line arguments
-     */
-    /**
- *
- * @author Mimi Opkins with some tweaking from Dave Brown
- */
-
-/**
- *
- * @author tlindblom
- */
-
 
 
      //  Database credentials
@@ -35,7 +25,10 @@ public class JDBC {
     //The number indicates how wide to make the field.
     //The "s" denotes that it's a string.  All of our output in this test are 
     //strings, but that won't always be the case.
-      static final String displayFormat="%-5s%-15s%-15s%-15s\n";
+      static final String displayFormat="%-5s%-15s%-15s%-15s\n"; //this displays 4 elements at once
+      static final String displayFormat3="%-5s%-15s%-15s\n";  // this displays 3 elements at once 
+      static final String displayFormat2="%-5s%-15s\n"; //this displays 2 elements at once
+      static final String displayFormat1="%-5s\n"; //this displays one element
 // JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.apache.derby.jdbc.ClientDriver";
     static String DB_URL = "jdbc:derby://localhost:1527/";
@@ -77,24 +70,25 @@ public static void main(String[] args) {
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL);
 
-            //STEP 4: Execute a query
+             //STEP 4: Execute a query
             System.out.println("Creating statement...");
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT GroupName, HeadWriter FROM WritingGroups";
+            sql = "SELECT groupname FROM WRITINGGROUPS";
             ResultSet rs = stmt.executeQuery(sql);
 
             //STEP 5: Extract data from result set
-            System.out.printf(displayFormat, "GroupName", "HeadWriter");
+            System.out.printf(displayFormat, "ID", "First Name", "Last Name", "Phone #");
             while (rs.next()) {
                 //Retrieve by column name
-                String GroupName = rs.getString("GroupName");
-                String HeadWriter = rs.getString("HeadWriter");
-               
+                String id = rs.getString("groupname");
+                String phone = rs.getString("headwriter");
+                String first = rs.getString("yearformed");
+                String last = rs.getString("subject");
 
                 //Display values
-                System.out.printf(displayFormat,
-                        dispNull(GroupName), dispNull(HeadWriter));
+                System.out.printf(displayFormat, 
+                        dispNull(id), dispNull(first), dispNull(last), dispNull(phone));
             }
             //STEP 6: Clean-up environment
             rs.close();
@@ -124,4 +118,5 @@ public static void main(String[] args) {
         }//end try
         System.out.println("Goodbye!");
     }//end main
-}//end FirstExample
+    
+}
