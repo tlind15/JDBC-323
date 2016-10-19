@@ -16,7 +16,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class JDBC_final {
-//  Database credentials
+ //  Database credentials
     static String USER = "username";
     static String PASS = "password";
     static String DBNAME = "database";
@@ -40,7 +40,7 @@ public class JDBC_final {
         else
             return input;
     }
-    
+
     public static void main(String[] args)
     {
 
@@ -49,7 +49,7 @@ public class JDBC_final {
         ResultSet result = null;
         Scanner input = new Scanner(System.in);
         boolean end = false;
-        
+
         Scanner in = new Scanner(System.in);
         System.out.print("Name of the database (not the user account): ");
         DBNAME = in.nextLine();
@@ -59,7 +59,7 @@ public class JDBC_final {
         PASS = in.nextLine();
         //Constructing the database URL connection string
         DB_URL = DB_URL + DBNAME + ";user="+ USER + ";password=" + PASS;
-        
+
         try {
             //STEP 2: Register JDBC driver
             Class.forName("org.apache.derby.jdbc.ClientDriver");
@@ -67,161 +67,161 @@ public class JDBC_final {
             //STEP 3: Open a connection
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL);
-        
-        
-
-        int choice;
 
 
-        do
-        {
-            System.out.println("\t\t\t*Main Menu*");
-            System.out.println("what do you want to do? \n1\\WritingGroups Menu.\n2\\Publisher Menu." +
-                    "\n3\\Book Menu.\n0\\Exit.");
-            choice = getInt();
-            switch (choice)
+
+            int choice;
+
+
+            do
             {
-                case 1:
-                    // WorkGroup case.
-                    do
-                    {
-                        System.out.println("what do you want to do? \n1\\List all Writing groups." +
-                                "\n2\\List all the data for a writing group specified by the user." +
-                                "\n0\\Back to Main Menu");
-                        choice = getInt();
-                        switch (choice)
+                System.out.println("\t\t\t*Main Menu*");
+                System.out.println("what do you want to do? \n1\\WritingGroups Menu.\n2\\Publisher Menu." +
+                        "\n3\\Book Menu.\n0\\Exit.");
+                choice = getInt();
+                switch (choice)
+                {
+                    case 1:
+                        // WorkGroup case.
+                        do
                         {
-                            case 1:
-                                //List All WritingGroups
-                                listWritingGroups();
-                                break;
+                            System.out.println("what do you want to do? \n1\\List all Writing groups." +
+                                    "\n2\\List all the data for a writing group specified by the user." +
+                                    "\n0\\Back to Main Menu");
+                            choice = getInt();
+                            switch (choice)
+                            {
+                                case 1:
+                                    //List All WritingGroups
+                                    listWritingGroups();
+                                    break;
 
-                            case 2:
-                                //List All Info of one WritingGroup
-                                showSpecificWritingGroup();
-                                break;
+                                case 2:
+                                    //List All Info of one WritingGroup
+                                    showSpecificWritingGroup();
+                                    break;
 
-                            case 0:
-                                // Go back to Main Menu.
-                                end = true;
-                                break;
+                                case 0:
+                                    // Go back to Main Menu.
+                                    end = true;
+                                    break;
 
-                            default:
-                                System.out.println("Invalid Input please try again!!\n\n");
+                                default:
+                                    System.out.println("Invalid Input please try again!!\n\n");
+                            }
+
                         }
 
-                    }
+                        while(!end);
 
-                    while(!end);
+                        end = false;
+                        break;
 
-                    end = false;
-                    break;
-
-                case 2:
-                    // Publisher case
-                    do
-                    {
-                        System.out.println("what do you want to do? \n1\\List all publishers." +
-                                "\n2\\List all the data for a publisher specified by the user." +
-                                "\n3\\Insert A new publisher\n4\\Insert and Replace Existing publisher\n" +
-                                "0\\Back to Main Menu.");
-                        choice = getInt();
-                        switch (choice)
+                    case 2:
+                        // Publisher case
+                        do
                         {
-                            case 1:
-                                // List All Publisher
-                                listPublishers();
-                                break;
+                            System.out.println("what do you want to do? \n1\\List all publishers." +
+                                    "\n2\\List all the data for a publisher specified by the user." +
+                                    "\n3\\Insert A new publisher\n4\\Insert and Replace Existing publisher\n" +
+                                    "0\\Back to Main Menu.");
+                            choice = getInt();
+                            switch (choice)
+                            {
+                                case 1:
+                                    // List All Publisher
+                                    listPublishers();
+                                    break;
 
-                            case 2:
-                                //List All Info of one publisher.
-                                showSpecificPublisher();
-                                break;
-                            case 3:
-                                //Insert a publisher
-                                insertPublisher();
-                                break;
+                                case 2:
+                                    //List All Info of one publisher.
+                                    showSpecificPublisher();
+                                    break;
+                                case 3:
+                                    //Insert a publisher
+                                    insertPublisher();
+                                    break;
 
-                            case 4:
-                                //Insert and Update publisher
-                                insertNUpdatePublisher();
-                                break;
+                                case 4:
+                                    //Insert and Update publisher
+                                    insertNUpdatePublisher();
+                                    break;
 
-                            case 0:
-                                // Go back to Main Menu.
-                                end = true;
-                                break;
+                                case 0:
+                                    // Go back to Main Menu.
+                                    end = true;
+                                    break;
 
-                            default:
-                                System.out.println("Invalid Input please try again!!\n\n");
+                                default:
+                                    System.out.println("Invalid Input please try again!!\n\n");
+                            }
                         }
-                    }
-                    while (!end);
+                        while (!end);
 
-                    end = false;
-                    break;
+                        end = false;
+                        break;
 
-                case 3:
-                    //Book case
-                    do
-                    {
-                        System.out.println("what do you want to do? \n1\\List all books." +
-                                "\n2\\List all the data for a book specified by the user." +
-                                        "\n3\\Insert A new book\n4\\Remove a book\n" +
-                                        "0\\Back to main Menu.");
-                        choice = getInt();
-                        switch (choice)
+                    case 3:
+                        //Book case
+                        do
                         {
-                            case 1:
-                                // List All Books
-                                listBooks();
-                                break;
+                            System.out.println("what do you want to do? \n1\\List all books." +
+                                    "\n2\\List all the data for a book specified by the user." +
+                                    "\n3\\Insert A new book\n4\\Remove a book\n" +
+                                    "0\\Back to main Menu.");
+                            choice = getInt();
+                            switch (choice)
+                            {
+                                case 1:
+                                    // List All Books
+                                    listBooks();
+                                    break;
 
-                            case 2:
-                                // List All Info for one Book
-                                showSpecificBook();
-                                break;
+                                case 2:
+                                    // List All Info for one Book
+                                    showSpecificBook();
+                                    break;
 
-                            case 3:
-                                // Add a new book
-                                addBook();
-                                break;
+                                case 3:
+                                    // Add a new book
+                                    addBook();
+                                    break;
 
-                            case 4:
-                                // Remove an Existing book
-                                removeBook();
-                                break;
+                                case 4:
+                                    // Remove an Existing book
+                                    removeBook();
+                                    break;
 
-                            case 0:
-                                // Go back to Main Menu.
-                                end = true;
-                                break;
+                                case 0:
+                                    // Go back to Main Menu.
+                                    end = true;
+                                    break;
 
-                            default:
-                                System.out.println("Invalid Input please try again!!\n\n");
+                                default:
+                                    System.out.println("Invalid Input please try again!!\n\n");
 
+                            }
                         }
-                    }
-                    while (!end);
-                    end = false;
-                    break;
+                        while (!end);
+                        end = false;
+                        break;
 
 
-                case 0:
-                    end = true;
-                    break;
+                    case 0:
+                        end = true;
+                        break;
 
-                default:
-                    System.out.println("Invalid Input Please Try again!! \n\n");
+                    default:
+                        System.out.println("Invalid Input Please Try again!! \n\n");
 
+                }
             }
-        }
-        while (!end);
-        
-        statement.close();
+            while (!end);
+
+            statement.close();
             conn.close();
         } catch (SQLException se) {
-            System.out.println("Sorry those are not the correct Database Credentials!");       
+            System.out.println("Sorry those are not the correct Database Credentials!");
             //Handle errors for JDBC
             //se.printStackTrace();
         } catch (Exception e) {
@@ -245,7 +245,7 @@ public class JDBC_final {
         System.out.println("Goodbye!");
     }//end main
 
-    
+
     public static int getInt()
     {
         Scanner in = new Scanner(System.in);
@@ -287,7 +287,7 @@ public class JDBC_final {
             {
                 valid = true;
                 end = false;
-             }
+            }
             else
             {
                 System.out.println("Invalid Input please try again!!\n\n");
@@ -547,7 +547,7 @@ public class JDBC_final {
         {
             System.err.println("Error: the New Publisher wasn't inserted. Please make sure the publisher Database" +
                     " exists and the information is not duplicated.");
-            
+
         }
         finally
         {
@@ -604,7 +604,7 @@ public class JDBC_final {
         catch(SQLException sqlE)
         {
             //System.out.println("Error: the New Publisher wasn't inserted. Please make sure the publisher Database" +
-                    //" exists and the information is not duplicated.");
+            //" exists and the information is not duplicated.");
             sqlE.printStackTrace();
         }
         finally
@@ -734,35 +734,22 @@ public class JDBC_final {
             result = statement.executeQuery();
 
             result.next();
+            String[] book = {result.getString("GroupName"),result.getString("headwriter"),result.getString("yearformed"),
+                    result.getString("subject"),result.getString("BookTitle"),result.getString("YearPublished"),
+                    result.getString("NumberPages"),result.getString("PublisherName"),result.getString("publisheraddress"),
+                    result.getString("publisherphone"),result.getString("publisheremail")};
+            String[] header = {"GroupName","HeadWriter","YearFormed","Subject","BookTitle ","YearPublished",
+            "NumberPages","PublisherName","PublisherAddress","PublisherPhone","PublisherEmail"};
 
-
-            // Grabs the string from spcified row/column
-            String GroupName = result.getString("GroupName");
-            String HeadWriter = result.getString("headwriter");
-            String yearformed = result.getString("yearformed");
-            String subject = result.getString("subject");
-            String BookTitle = result.getString("BookTitle");
-            String YearPublished = result.getString("YearPublished");
-            String NumberPages = result.getString("NumberPages");
-            String PublisherName = result.getString("PublisherName");
-            String pubAddress = result.getString("publisheraddress");
-            String pubphone = result.getString("publisherphone");
-            String pubemail = result.getString("publisheremail");
-            
-
-            // prints out data for group name
-            System.out.printf(displayFormat2, "GroupName: " + GroupName,
-                    "Book Title: " + BookTitle,
-                    "Publisher Name: " + PublisherName,
-                    "Year Published: " + YearPublished,
-                    "Number Pages: " + NumberPages);
-
+            for (int i = 0; i < book.length; i++) {
+                System.out.println(header[i] +" : "+ book[i] );
+            }
         }
         catch(SQLException se)
         {
             System.err.println("Error: Book does not exist. Please make sure that "
                     + "Writing Group, Publisher, and Book Title are correct.");
-            
+
         }
         finally
         {
