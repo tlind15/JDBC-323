@@ -15,8 +15,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class JDBC_final {
- //  Database credentials
+public class JDBC_final {//  Database credentials
     static String USER = "username";
     static String PASS = "password";
     static String DBNAME = "database";
@@ -347,7 +346,7 @@ public class JDBC_final {
             //ask user for input
             System.out.print("Enter Group Name: ");
             specifier = in.nextLine();
-            statement.setString(1, specifier/*.toUpperCase()*/);
+            statement.setString(1, specifier.toUpperCase());
 
             resultSet = statement.executeQuery();
 
@@ -361,10 +360,9 @@ public class JDBC_final {
             String Subject = resultSet.getString("Subject");
 
             // prints out data for group name
-            System.out.printf(displayFormat, "GroupName: " + GroupName,
-                    "Head Writer: " + HeadWriter,
-                    "Year Formed: " + YearFormed,
-                    "Subject: " + Subject);
+            System.out.println( "GroupName: " + GroupName+"\nHead Writer: " + HeadWriter+
+                    "\nYear Formed: " + YearFormed+
+                    "\nSubject: " + Subject);
         }
         catch(SQLException se)
         {
@@ -447,7 +445,7 @@ public class JDBC_final {
 
             System.out.println("Enter the Name of the publisher to find");
             String publisherChosen = input.nextLine();
-            statement.setString(1,publisherChosen/*.toUpperCase()*/);
+            statement.setString(1,publisherChosen.toUpperCase());
 
             result = statement.executeQuery();
 
@@ -460,11 +458,10 @@ public class JDBC_final {
             String publisher_Phone = result.getString("publisherphone");
             String publisher_Email = result.getString("publisheremail");
 
-            System.out.printf(displayFormat, "PublisherName", "PublisherAddress", "PublisherPhone", "PublisherEmail");
-
-            System.out.printf(displayFormat, dispNull(publisher_Name),
-                    dispNull(publisher_Address), dispNull(publisher_Phone),
-                    dispNull(publisher_Email));
+            System.out.println(  "PublisherName: "+ dispNull(publisher_Name)+
+                    "\nPublisherAddress: " +dispNull(publisher_Address)+
+                    "\nPublisherPhone: "+ dispNull(publisher_Phone)+
+                    "\nPublisherEmail: "+dispNull(publisher_Email));
 
 
 
@@ -519,19 +516,19 @@ public class JDBC_final {
 
                 System.out.println("Enter Name of Publisher :");
                 String publisher_Name = input.nextLine();
-                statement.setString(1,publisher_Name/*.toUpperCase()*/);
+                statement.setString(1,publisher_Name.toUpperCase());
 
                 System.out.println("Enter Publisher's Address");
                 String publisher_Address = input.nextLine();
-                statement.setString(2, publisher_Address/*.toUpperCase()*/);
+                statement.setString(2, publisher_Address.toUpperCase());
 
                 System.out.println("Enter Publisher's Phone");
                 String publisher_Phone = input.nextLine();
-                statement.setString(3, publisher_Phone/*.toUpperCase()*/);
+                statement.setString(3, publisher_Phone.toUpperCase());
 
                 System.out.println("Enter Publisher's E-Mail");
                 String publisher_Email = input.nextLine();
-                statement.setString(4, publisher_Email/*.toUpperCase()*/);
+                statement.setString(4, publisher_Email.toUpperCase());
 
                 statement.executeUpdate();
 
@@ -584,19 +581,19 @@ public class JDBC_final {
 
             System.out.println("Enter Name of Publisher :");
             publisher_Name = input.nextLine();
-            statement.setString(1,publisher_Name/*.toUpperCase()*/);
+            statement.setString(1,publisher_Name.toUpperCase());
 
             System.out.println("Enter Publisher's Address");
             String publisher_Address = input.nextLine();
-            statement.setString(2, publisher_Address/*.toUpperCase()*/);
+            statement.setString(2, publisher_Address.toUpperCase());
 
             System.out.println("Enter Publisher's Phone");
             String publisher_Phone = input.nextLine();
-            statement.setString(3, publisher_Phone/*.toUpperCase()*/);
+            statement.setString(3, publisher_Phone.toUpperCase());
 
             System.out.println("Enter Publisher's E-Mail");
             String publisher_Email = input.nextLine();
-            statement.setString(4, publisher_Email/*.toUpperCase()*/);
+            statement.setString(4, publisher_Email.toUpperCase());
 
             statement.executeUpdate();
 
@@ -720,15 +717,15 @@ public class JDBC_final {
             //ask user for input
             System.out.print("Enter Group Name: ");
             specifier = in.nextLine();
-            statement.setString(1, specifier/*.toUpperCase()*/);
+            statement.setString(1, specifier.toUpperCase());
 
             System.out.print("Enter Book Title: ");
             specifier = in.nextLine();
-            statement.setString(2, specifier/*.toUpperCase()*/);
+            statement.setString(2, specifier.toUpperCase());
 
 //            System.out.print("Enter Publisher Name: ");
 //            specifier = in.nextLine();
-//            statement.setString(3, specifier/*.toUpperCase()*/);
+//            statement.setString(3, specifier.toUpperCase());
 
 
             result = statement.executeQuery();
@@ -794,7 +791,7 @@ public class JDBC_final {
 
         //***Get Title***
         System.out.print("What is the title of the book? ");
-        String Title = in.nextLine();
+        String Title = in.nextLine().toUpperCase();
         //******
 
         //***Get Page count***
@@ -913,9 +910,9 @@ public class JDBC_final {
             //***Add book data to database***
             stmt = "INSERT INTO books (groupname, booktitle, publishername, yearpublished, numberpages) VALUES (?, ?, ?, ?, ?)";
             statement = conn.prepareStatement(stmt);
-            statement.setString(1, GroupName);
-            statement.setString(2, Title);
-            statement.setString(3, pubName);
+            statement.setString(1, GroupName.toUpperCase());
+            statement.setString(2, Title.toUpperCase());
+            statement.setString(3, pubName.toUpperCase());
             statement.setInt(4, pubYear);
             statement.setInt(5, pages);
 
@@ -1066,8 +1063,8 @@ public class JDBC_final {
             //***Delete Book from Database***
             stmt = "DELETE FROM books WHERE groupname = ? AND booktitle = ?";
             pstmt = conn.prepareStatement(stmt);
-            pstmt.setString(1, GroupName);
-            pstmt.setString(2, Title);
+            pstmt.setString(1, GroupName.toUpperCase());
+            pstmt.setString(2, Title.toUpperCase());
 
             pstmt.executeUpdate();
             //******
